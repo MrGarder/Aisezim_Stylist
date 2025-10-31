@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Aisezim Stylist — Салон красоты</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="static/styles/style.css">
+
+ <style>
+    :root{
+      --bg:#0f0f10;           /* very dark */
+      --panel:#1b1b1d;        /* dark grey panel */
+      --muted:#9aa0a6;        /* muted text */
+      --accent1:#ff5ca8;      /* neon pink */
+      --accent2:#8a5cff;      /* neon purple */
+      --glass: rgba(255,255,255,0.03);
+      --neon-glow: 0 0 8px rgba(138,92,255,0.18), 0 0 30px rgba(255,92,168,0.07);
+      font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(138,92,255,0.06), transparent),
+                  radial-gradient(900px 500px at 90% 90%, rgba(255,92,168,0.04), transparent),
+                  linear-gradient(180deg,var(--bg),#0a0a0b 60%);
+      color:#eee;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:32px;
+    }
+
+    /* Page container */
+    .wrap{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start}
+
+    /* Left main column */
+    header.site-header{grid-column:1/2;display:flex;flex-direction:column;gap:18px}
+    .brand{
+      display:flex;align-items:center;gap:14px;
+    }
+    .logo{
+      width:74px;height:74px;border-radius:16px;background:linear-gradient(135deg,var(--accent2),var(--accent1));
+      display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;color:#111;box-shadow:var(--neon-glow);
+      transform:translateZ(0);
+    }
+    .site-title{font-size:28px;font-weight:800;letter-spacing:0.6px}
+    .site-sub{color:var(--muted);font-size:13px;margin-top:-4px}
+
+    .hero{
+      margin-top:8px;padding:28px;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);
+      border:1px solid rgba(255,255,255,0.04);box-shadow:0 6px 30px rgba(0,0,0,0.6);
+      position:relative;overflow:hidden
+    }
+    .neon-border{
+      position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;
+    }
+    .neon-border:before,.neon-border:after{
+      content:'';position:absolute;inset:-2px;border-radius:16px;background:linear-gradient(90deg,var(--accent2),transparent 30%);filter:blur(24px);opacity:0.9
+    }
+    .neon-border:after{right:-10px;left:auto;top:40%;height:50%;background:linear-gradient(180deg,var(--accent1),transparent);filter:blur(36px)}
+
+    .hero-grid{display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start}
+    .intro{padding:6px 6px 6px 0}
+    .intro h1{font-size:36px;margin:0 0 6px 0;line-height:1.02;text-shadow:0 2px 12px rgba(138,92,255,0.12)}
+    .intro p{color:var(--muted);margin:0 0 12px 0}
+    .cta-row{display:flex;gap:12px}
+    .btn{background:linear-gradient(90deg,var(--accent1),var(--accent2));padding:10px 14px;border-radius:10px;border:none;color:#111;font-weight:700;cursor:pointer;box-shadow:var(--neon-glow);transition:transform .18s}
+    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);box-shadow:none}
+    .btn:active{transform:translateY(1px)}
+
+    /* Gallery */
+    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+    .shot{background:var(--panel);border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.03);position:relative;cursor:pointer;transition:transform .28s ease, box-shadow .28s}
+    .shot img{width:100%;height:100%;display:block;object-fit:cover;vertical-align:middle}
+    .shot:hover{transform:translateY(-6px) scale(1.03);box-shadow:var(--neon-glow)}
+    .shot::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent,rgba(0,0,0,0.18))}
+
+    /* Right column */
+    aside.right{grid-column:2/3;position:sticky;top:32px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+
+    /* Contacts */
+    .contacts{display:flex;flex-direction:column;gap:10px}
+    .contact-row{display:flex;align-items:center;gap:12px;padding:10px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);border:1px solid rgba(255,255,255,0.02)}
+    .contact-icon{width:44px;height:44px;border-radius:10px;background:linear-gradient(180deg,var(--accent2),var(--accent1));display:flex;align-items:center;justify-content:center;font-weight:700;color:#111}
+    .contact-meta{display:flex;flex-direction:column}
+    .contact-meta .label{font-weight:600}
+    .contact-meta .meta{font-size:13px;color:var(--muted)}
+
+    /* Price list */
+    .price-list{margin-top:16px}
+    .price-item{display:flex;justify-content:space-between;padding:12px;border-radius:10px;margin-bottom:8px;background:linear-gradient(90deg,rgba(255,255,255,0.01),transparent);border:1px solid rgba(255,255,255,0.02)}
+    .price-item .name{font-weight:600}
+    .price-item .cost{color:var(--muted)}
+
+    /* Modal image preview */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:80}
+    .modal.show{display:flex}
+    .modal .inner{max-width:1000px;width:95%;max-height:85%;border-radius:12px;overflow:hidden;background:linear-gradient(180deg,#0b0b0b, #111);box-shadow:0 20px 60px rgba(0,0,0,0.8)}
+    .modal img{width:100%;height:100%;object-fit:cover}
+    .modal .close{position:absolute;top:20px;right:20px;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.06);padding:8px;border-radius:8px;cursor:pointer}
+
+    /* Footer */
+    footer{grid-column:1/3;margin-top:28px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;align-items:center}
+
+    /* small screens */
+    @media(max-width:980px){
+      .wrap{grid-template-columns:1fr;padding:0}
+      .hero-grid{grid-template-columns:1fr}
+      aside.right{position:relative;top:auto;}
+    }
+
+    /* simple scroll reveal */
+    .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s ease}
+    .reveal.visible{opacity:1;transform:none}
+
+    /* subtle neon pulse */
+    @keyframes pulseNeon{0%{filter:drop-shadow(0 0 6px rgba(138,92,255,0.12))}50%{filter:drop-shadow(0 0 20px rgba(255,92,168,0.12))}100%{filter:drop-shadow(0 0 6px rgba(138,92,255,0.12))}}
+    .logo{animation:pulseNeon 3.6s infinite}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-header">
+      <div class="brand">
+        <div class="logo">AS</div>
+        <div>
+          <div class="site-title">Aisezim Stylist</div>
+          <div class="site-sub">Салон красоты — стиль, который светится</div>
+        </div>
+      </div>
+
+      <section class="hero card">
+        <div class="neon-border" aria-hidden></div>
+        <div class="hero-grid">
+          <div class="intro">
+            <h1 class="reveal">Создаем образы с неоновой ноткой</h1>
+            <p class="reveal">Aisezim Stylist — профессиональная команда стилистов: стрижки, окрашивание, укладки, макияж. Современные техники, персональный подход и интерьер.</p>
+            <div class="cta-row reveal">
+               
+<!-- 🔘 Кнопка Информация -->
+<button class="btn secondary" onclick="openInfo()">Информация</button>
+
+<!-- 💡 Модальное окно с тремя фото -->
+<div id="info-modal" class="modal">
+  <div class="info-box">
+    <button class="close" onclick="closeInfo()">✕</button>
+    <div class="info-gallery">
+      <img src="static/images/8bb769b2-18c9-47f4-ad03-4fe91301994a.jfif" alt="Фото 1">
+      <img src="static/images/86c96cb8-711d-467a-86b0-07098fff3b49.jfif" alt="Фото 2">
+      <img src="static/images/268ff988-3cf1-4dc4-823a-b3c0762a44fe.jfif" alt="Фото 3">
+    </div>
+  </div>
+</div>
+
+                <button class="btn secondary" onclick="openPriceModal()">Прайс-лист</button>
+
+            </div>
+<!-- ВСТАВЬ ТОЛЬКО ЭТО (в любое место страницы, лучше в конец <body>) -->
+<script>
+(function() {
+  // Путь к файлу музыки — поменяй на свой, например '/assets/audio/track.mp3'
+  const AUDIO_SRC = 'static/fonts/Begish_Unutpagyn_meni_men_unutpjm_seni.mp3';
+
+  // Если кнопка уже есть, не добавляем повторно
+  if (document.getElementById('musicButton')) return;
+
+  // --- Добавляем стили ---
+  const css = `
+    #musicButton {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      width: 50px;
+      height: 50px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.10);
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      transition: all 0.25s ease;
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    #musicButton:hover { transform: scale(1.08); background: rgba(255,255,255,0.22); }
+    #musicButton.playing { background: #ff4b4b; box-shadow: 0 0 20px #ff4b4b; animation: music-pulse 1.4s infinite; }
+    @keyframes music-pulse {
+      0% { box-shadow: 0 0 10px #ff4b4b; }
+      50% { box-shadow: 0 0 24px #ff4b4b; }
+      100% { box-shadow: 0 0 10px #ff4b4b; }
+    }
+  `;
+  const styleEl = document.createElement('style');
+  styleEl.appendChild(document.createTextNode(css));
+  document.head.appendChild(styleEl);
+
+  // --- Создаём кнопку и audio ---
+  const btn = document.createElement('button');
+  btn.id = 'musicButton';
+  btn.type = 'button';
+  btn.title = 'Включить музыку';
+  btn.textContent = '🎵';
+
+  const audio = document.createElement('audio');
+  audio.id = 'bgMusic';
+  audio.src = AUDIO_SRC;
+  audio.loop = true;
+  audio.preload = 'auto';
+
+  // Вставляем в DOM (в конец body)
+  document.body.appendChild(btn);
+  document.body.appendChild(audio);
+
+  // --- Логика клика ---
+  let isPlaying = false;
+
+  btn.addEventListener('click', () => {
+    if (!isPlaying) {
+      audio.play().then(() => {
+        isPlaying = true;
+        btn.classList.add('playing');
+        btn.textContent = '⏸';
+      }).catch(err => {
+        console.warn('Ошибка воспроизведения audio:', err);
+        alert('Не удалось воспроизвести трек. Проверьте путь в AUDIO_SRC и формат файла (mp3/ogg).');
+      });
+    } else {
+      audio.pause();
+      isPlaying = false;
+      btn.classList.remove('playing');
+      btn.textContent = '🎵';
+    }
+  });
+
+  // --- На случай внешней смены состояния (например, стоп со скрипта) ---
+  audio.addEventListener('ended', () => {
+    isPlaying = false;
+    btn.classList.remove('playing');
+    btn.textContent = '🎵';
+  });
+})();
+</script>
+
+
+            <div class="gallery reveal" style="margin-top:18px">
+              <div class="shot" data-src="static/images/photo_5199717288528445833_y.jpg"><img src="static/images/photo_5199717288528445833_y.jpg" alt="shot1"></div>
+              <div class="shot" data-src="static/images/photo_5199717288528445834_y.jpg"><img src="static/images/photo_5199717288528445834_y.jpg" alt="shot2"></div>
+              <div class="shot" data-src="static/images/photo_5199717288528445864_y.jpg"><img src="static/images/photo_5199717288528445864_y.jpg" alt="shot3"></div>
+              <div class="shot" data-src="static/images/photo_5199717288528445866_y.jpg"><img src="static/images/photo_5199717288528445866_y.jpg" alt="shot4"></div>
+              <div class="shot" data-src="static/images/photo_5199717288528445825_y (1).jpg"><img src="static/images/photo_5199717288528445825_y (1).jpg" alt="shot5"></div>
+              <div class="shot" data-src="static/images/photo_5199717288528445826_y (1).jpg"><img src="static/images/photo_5199717288528445826_y (1).jpg" alt="shot6"></div>
+            </div>
+
+          </div>
+
+          <aside class="card" aria-label="Краткая информация">
+            <h3 style="margin:0 0 8px 0">О салоне</h3>
+            <p style="margin:0 0 12px;color:var(--muted)">Уютный интерьер, инструменты премиум-класса. Мы используем стойкие красители и современные техники стрижки. Онлайн-запись и консультации.</p>
+
+            <div id="prices" class="price-list">
+              <h4 style="margin:0 0 10px 0">Прайс (пример)</h4>
+              <div class="price-item"><div class="name">Стрижка</div><div class="cost">от 250 сом</div></div>
+              <div class="price-item"><div class="name">Сложное окрашивание</div><div class="cost">от 8000 сом</div></div>
+              <div class="price-item"><div class="name">Контуринг</div><div class="cost">от 4500 сом</div></div>
+              <div class="price-item"><div class="name">Осветление маслом</div><div class="cost">от 5000 сом</div></div>
+            </div>
+
+          </aside>
+        </div>
+      </section>
+
+      <section style="margin-top:18px" class="reveal">
+        <h3 style="margin:6px 0 10px 0">Наши работы</h3>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+          <div class="shot" data-src="static/images/photo_5199717288528445850_y.jpg"><img src="static/images/photo_5199717288528445850_y.jpg" alt="work1"></div>
+          <div class="shot" data-src="static/images/photo_5199717288528445835_y.jpg"><img src="static/images/photo_5199717288528445835_y.jpg" alt="work2"></div>
+          <div class="shot" data-src="static/images/photo_5199717288528445840_y.jpg"><img src="static/images/photo_5199717288528445840_y.jpg" alt="work3"></div>
+          <div class="shot" data-src="static/images/photo_5199717288528445867_y.jpg"><img src="static/images/photo_5199717288528445867_y.jpg" alt="work4"></div>
+        </div>
+      </section>
+
+    </header>
+
+    <aside class="right">
+      <div class="card contacts" id="contacts">
+        <h3 style="margin:0 0 6px 0">Контакты</h3>
+        <div class="contact-row">
+          <div class="contact-icon">☎</div>
+          <div class="contact-meta">
+            <div class="label">Телефон</div>
+            <div class="meta">+996 706 341 372</div>
+          </div>
+        </div>
+
+        <div class="contact-row">
+          <div class="contact-icon">📍</div>
+          <div class="contact-meta">
+            <div class="label">Адрес</div>
+            <div class="meta">г.Ош, ул. Аманбая Жунусова 50, Кыргызтан</div>
+          </div>
+        </div>
+
+        <div class="contact-row">
+          <div class="contact-icon">⏰</div>
+          <div class="contact-meta">
+            <div class="label">Время работы</div>
+            <div class="meta">Пн–Вс 09:00 — 20:00</div>
+          </div>
+        </div>
+
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <head>
+  <meta charset="UTF-8">
+  <title>Кнопка Instagram</title>
+  <style>
+    .instagram-btn {
+      display: inline-block;
+      background-color: #f700ff; /* фирменный цвет Instagram */
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .instagram-btn:hover {
+      background-color: #c92d63;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Кнопка Instagram -->
+  <a class="instagram-btn" 
+     href="https://www.instagram.com/aisezim_stylist/" 
+     target="_blank">
+    📸 Перейти в Instagram
+  </a>
+
+        
+        </div>
+<head>
+  <meta charset="UTF-8">
+  <title>Кнопка WhatsApp</title>
+  <style>
+    .whatsapp-btn {
+      display: inline-block;
+      background-color: #fc00fc; /* фирменный цвет WhatsApp */
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .whatsapp-btn:hover {
+      background-color: #1ebe5a;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Кнопка WhatsApp -->
+  <a class="whatsapp-btn" 
+     href="https://wa.me/996706341372" 
+     target="_blank">
+    💬 Написать в WhatsApp
+  </a>
+
+      <div class="card" style="margin-top:18px">
+        <h4 style="margin:0 0 10px 0">Следите за нами</h4>
+        <p style="margin:0;color:var(--muted)">Instagram, WhatsApp — всегда на связи 💬</p>
+      </div>
+    </aside>
+
+    <footer>
+      <div>© 2025 Aisezim Stylist </div>
+     <div><p>Создано при поддержке</p><p>Компании WebDragons</p>
+    </footer>
+  </div>
+
+  <div class="modal" id="imageModal">
+    <div class="inner">
+      <img src="" alt="просмотр" id="modalImg">
+      <button class="close" onclick="closeModal()">✕</button>
+    </div>
+  </div>
+
+  <script>
+    // простая анимация появления
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries=>{
+      for(const e of entries){if(e.isIntersecting)e.target.classList.add('visible')}
+    },{threshold:.2});
+    reveals.forEach(el=>obs.observe(el));
+
+    // модальное фото
+    const shots=document.querySelectorAll('.shot'), modal=document.getElementById('imageModal'), modalImg=document.getElementById('modalImg');
+    shots.forEach(s=>s.addEventListener('click',()=>{modal.classList.add('show');modalImg.src=s.dataset.src}));
+    function closeModal(){modal.classList.remove('show')}
+  </script>
+  <!-- 🌈 НЕОНОВАЯ КАРУСЕЛЬ ВНИЗУ САЙТА -->
+<section class="carousel-section">
+  <h2 class="carousel-title">Наши работы</h2>
+  <div class="carousel">
+    <div class="carousel-track">
+      <img src="static/images/photo_5199717288528445838_y.jpg" alt="фото 1">
+      <img src="static/images/photo_5199717288528445832_y.jpg" alt="фото 2">
+      <img src="static/images/photo_5199717288528445831_y.jpg" alt="фото 3">
+      <img src="static/images/photo_5199717288528445858_y.jpg" alt="фото 4">
+      <img src="static/images/photo_5199717288528445860_y.jpg" alt="фото 5">
+      <img src="static/images/photo_5199717288528445828_y (1).jpg" alt="фото 6">
+      <img src="static/images/photo_5199717288528445827_y (1).jpg" alt="фото 7">
+      <img src="static/images/photo_5199717288528445826_y (1).jpg" alt="фото 8">
+    </div>
+  </div>
+</section>
+
+<style>
+  .carousel-section {
+    margin-top: 60px;
+    padding: 40px 0;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .carousel-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 0 12px rgba(255,92,168,0.6);
+    margin-bottom: 24px;
+  }
+
+  .carousel {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 18px;
+    animation: scrollCarousel 30s linear infinite;
+  }
+
+  .carousel img {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 14px;
+    box-shadow: 0 0 20px rgba(138,92,255,0.3), 0 0 40px rgba(255,92,168,0.1);
+    transition: transform 0.4s, box-shadow 0.4s;
+  }
+
+  .carousel img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255,92,168,0.6), 0 0 45px rgba(138,92,255,0.3);
+  }
+
+  @keyframes scrollCarousel {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* Анимация останавливается при наведении */
+  .carousel:hover .carousel-track {
+    animation-play-state: paused;
+  }
+
+  /* Адаптация для телефона */
+  @media (max-width: 600px) {
+    .carousel img {
+      width: 200px;
+      height: 130px;
+    }
+    .carousel-title {
+      font-size: 22px;
+    }
+  }
+</style>
+
+<script>
+  // Дублируем картинки, чтобы бесконечно скроллилось
+  const track = document.querySelector('.carousel-track');
+  if (track) {
+    track.innerHTML += track.innerHTML;
+  }
+</script>
+<!-- 🌸 Модальное окно с фото прайс-листа -->
+<div class="modal" id="priceModal">
+  <div class="inner">
+    <button class="close" onclick="closePriceModal()">✕</button>
+    <div class="price-gallery">
+      <img src="static/images/photo_5199717288528445796_y.jpg" alt="Прайс-лист">
+      
+  </div>
+</div>
+<script>
+function openPriceModal() {
+  document.getElementById('priceModal').classList.add('show');
+}
+function closePriceModal() {
+  document.getElementById('priceModal').classList.remove('show');
+}
+// Закрытие по клику вне окна
+document.getElementById('priceModal').addEventListener('click', (e) => {
+  if (e.target.id === 'priceModal') closePriceModal();
+});
+// Закрытие по клавише Esc
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closePriceModal();
+});
+</script>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('#infoModal .slide');
+
+function showSlide(index) {
+  slides.forEach((s, i) => s.classList.toggle('active', i === index));
+}
+
+function nextSlide() {
+  currentSlide = (currentSlide + 1) % slides.length;
+  showSlide(currentSlide);
+}
+
+function prevSlide() {
+  currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+  showSlide(currentSlide);
+}
+
+function openInfoModal() {
+  document.getElementById('infoModal').classList.add('show');
+  currentSlide = 0;
+  showSlide(currentSlide);
+}
+
+function closeInfoModal() {
+  document.getElementById('infoModal').classList.remove('show');
+}
+
+// Закрытие по клику вне окна
+document.getElementById('infoModal').addEventListener('click', (e) => {
+  if (e.target.id === 'infoModal') closeInfoModal();
+});
+// Закрытие по клавише Esc
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeInfoModal();
+});
+</script>
+<script src="script.js"></script>
+<div id="easter-egg" class="hidden">
+  <h1>Cделано при поддержке <p> Клана Red Dragons</p></h1>
+</div>
+<script>
+  const logo = document.querySelector('.logo');
+  const egg = document.getElementById('easter-egg');
+
+  logo.addEventListener('click', () => {
+    egg.classList.add('show');
+    setTimeout(() => {
+      egg.classList.remove('show');
+    }, 2500);
+  });
+</script>
+<script>
+function openInfo() {
+  document.getElementById("info-modal").classList.add("show");
+}
+function closeInfo() {
+  document.getElementById("info-modal").classList.remove("show");
+}
+document.getElementById("info-modal").addEventListener("click", (e) => {
+  if (e.target.id === "info-modal") closeInfo();
+});
+</script>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+            
+
+             
